@@ -13,6 +13,7 @@ class Process implements Comparator<Process> {
     public int arrivalTime;
     public int burstTime;
     public int remainingTime;
+    public int waitingTime;
 
     Process() {
     }
@@ -21,7 +22,8 @@ class Process implements Comparator<Process> {
         this.processId = processId;
         this.arrivalTime = arrivalTime;
         this.burstTime = burstTime;
-        remainingTime = burstTime;
+        this.remainingTime = burstTime;
+        this.waitingTime = 0;
     }
 
     @Override
@@ -68,6 +70,15 @@ class SJF {
 
         System.out.println("Process Scheduling");
         sjf();
+
+        float totalWaitingTime = 0f;
+        System.out.println("\nWaiting Time");
+        for (Process p : processes) {
+            System.out.println("Process " + p.processId + ", Waiting Time: " + p.waitingTime);
+            totalWaitingTime += p.waitingTime;
+        }
+
+        System.out.println("\nAverage Waiting Time: " + (totalWaitingTime / n));
     }
 
     private static void sjf() {
@@ -98,6 +109,13 @@ class SJF {
                 checkForNextMinimumProcess = false;
             }
 
+            for (Process p : arrivedProcesses) {
+                if (p == minProcess) {
+                    continue;
+                }
+                p.waitingTime += 1;
+            }
+
             if (minProcess != null) {
                 minProcess.remainingTime -= 1;
 
@@ -119,7 +137,6 @@ class SJF {
 }
 
 /*
-Output:
 Enter number of Processes
 4
 Enter details
@@ -170,4 +187,12 @@ CurrentTime: 22 , Process: 3
 CurrentTime: 23 , Process: 3
 CurrentTime: 24 , Process: 3
 CurrentTime: 25 , Process: 3
+
+Waiting Time
+Process 1, Waiting Time: 9
+Process 2, Waiting Time: 0
+Process 3, Waiting Time: 15
+Process 4, Waiting Time: 2
+
+Average Waiting Time: 6.5
 */
