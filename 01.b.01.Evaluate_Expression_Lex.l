@@ -1,3 +1,9 @@
+/*
+1.b. Write YACC program to evaluate arithmetic expression involving operators: +, -, *, and /
+
+LEX Part
+*/
+
 %{
     #include "y.tab.h"
     extern int yylval;

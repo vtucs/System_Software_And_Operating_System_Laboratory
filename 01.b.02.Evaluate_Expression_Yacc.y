@@ -1,3 +1,9 @@
+/*
+1.b. Write YACC program to evaluate arithmetic expression involving operators: +, -, *, and /
+
+YACC Part
+*/
+
 %{
     #include <stdio.h>
     #include <stdlib.h>
@@ -39,3 +45,14 @@ int yyerror()
     printf("Invalid Expression\n");
     exit(0);
 }
+
+/*
+Output:
+>>> lex 01.b.01.Evaluate_Expression_Lex.l 
+>>> yacc -d 01.b.02.Evaluate_Expression_Yacc.y 
+>>> gcc lex.yy.c y.tab.c -ll -ly
+>>> ./a.out 
+2+3*8
+Result=26
+*/
+

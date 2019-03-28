@@ -1,3 +1,9 @@
+/*
+3. Design, develop and implement YACC/C program to construct Predictive / LL(1)
+Parsing Table for the grammar rules: A →aBa , B →bB | ε. Use this table to parse
+the sentence: abba$
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -143,10 +149,42 @@ void main()
     printf("\t\t%s\t\n", (input+i));
     if(stack[top] == '$' && input[i] == '$')
     {
-        printf("Valid\n");
+        printf("Valid String\n");
     }
     else
     {
-        printf("Invalid\n");
+        printf("Invalid String\n");
     }
 }
+
+/*
+Output:
+
+>>> gcc 03.LL1_Parser.c 
+>>> ./a.out 
+Grammar:
+A->aBa
+
+B->bB
+
+B->@
+
+first={a, b, @}
+follow={$, a}
+Enter the input string
+abba$
+
+
+Stack		Input		Action
+A$		abba$		Apply Production A->aBa
+aBa$		abba$		Matched a
+Ba$		bba$		Apply Production B->bB
+bBa$		bba$		Matched b
+Ba$		ba$		Apply Production B->bB
+bBa$		ba$		Matched b
+Ba$		a$		Apply Production B->@
+a$		a$		Matched a
+$		$	
+Valid String
+*/
+
