@@ -27,19 +27,9 @@ class Process implements Comparator<Process> {
     @Override
     public int compare(Process p1, Process p2) {
         if (p1.arrivalTime == p2.arrivalTime) {
-
-            if (p1.burstTime < p2.burstTime) {
-                return -1;
-            } else if (p1.burstTime > p2.burstTime) {
-                return 1;
-            } else {
-                return 0;
-            }
-
-        } else if (p1.arrivalTime < p2.arrivalTime) {
-            return -1;
+            return Integer.compare(p1.burstTime, p2.burstTime);
         } else {
-            return 1;
+            return Integer.compare(p1.arrivalTime, p2.arrivalTime);
         }
     }
 }
