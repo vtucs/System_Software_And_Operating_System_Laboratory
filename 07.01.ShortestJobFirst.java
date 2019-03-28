@@ -6,9 +6,12 @@ with different quantum sizes for RR algorithm.
 SJF Part in this file
 */
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.TreeSet;
 
-class Process implements Comparator<Process> {
+class Process implements Comparable<Process> {
     public int processId;
     public int arrivalTime;
     public int burstTime;
@@ -27,11 +30,11 @@ class Process implements Comparator<Process> {
     }
 
     @Override
-    public int compare(Process p1, Process p2) {
-        if (p1.arrivalTime == p2.arrivalTime) {
-            return Integer.compare(p1.burstTime, p2.burstTime);
+    public int compareTo(Process p) {
+        if (this.arrivalTime == p.arrivalTime) {
+            return Integer.compare(this.burstTime, p.burstTime);
         } else {
-            return Integer.compare(p1.arrivalTime, p2.arrivalTime);
+            return Integer.compare(this.arrivalTime, p.arrivalTime);
         }
     }
 }
@@ -59,7 +62,7 @@ class SJF {
             processes[i] = new Process(i + 1, arrivalTime, burstTime);
         }
 
-        Arrays.sort(processes, new Process());
+        Arrays.sort(processes);
 
         arrivalTimes = new TreeSet<>();
         for (int i = 0; i < n; i++) {
@@ -92,9 +95,9 @@ class SJF {
             if (arrivalTimes.contains(currentTime)) {
                 while (processCursor < processes.length && processes[processCursor].arrivalTime <= currentTime) {
                     arrivedProcesses.add(processes[processCursor]);
-                    checkForNextMinimumProcess = true;
                     processCursor += 1;
                 }
+                checkForNextMinimumProcess = true;
             }
 
             if (checkForNextMinimumProcess) {
@@ -119,12 +122,13 @@ class SJF {
             if (minProcess != null) {
                 minProcess.remainingTime -= 1;
 
+                System.out.println("Current Time: " + currentTime + " , Process: " + minProcess.processId);
+
                 if (minProcess.remainingTime == 0) {
                     arrivedProcesses.remove(minProcess);
                     checkForNextMinimumProcess = true;
+                    minProcess = null;
                 }
-
-                System.out.println("CurrentTime: " + currentTime + " , Process: " + minProcess.processId);
             }
 
             if (arrivedProcesses.isEmpty() && currentTime > arrivalTimes.last()) {
@@ -137,6 +141,8 @@ class SJF {
 }
 
 /*
+Output:
+
 Enter number of Processes
 4
 Enter details
