@@ -83,6 +83,7 @@ class SJF {
     private static void sjf() {
         int processCursor = 0;
         int currentTime = 0;
+        boolean checkForNextMinimumProcess = false;
         Process minProcess = null;
 
         while (true) {
@@ -90,16 +91,21 @@ class SJF {
             if (arrivalTimes.contains(currentTime)) {
                 while (processCursor < processes.length && processes[processCursor].arrivalTime <= currentTime) {
                     arrivedProcesses.add(processes[processCursor]);
+                    checkForNextMinimumProcess = true;
                     processCursor += 1;
                 }
             }
 
-            int minRemainingTime = Integer.MAX_VALUE;
-            for (Process p : arrivedProcesses) {
-                if (p.remainingTime < minRemainingTime) {
-                    minProcess = p;
-                    minRemainingTime = p.remainingTime;
+            if (checkForNextMinimumProcess) {
+                int minRemainingTime = Integer.MAX_VALUE;
+                for (Process p : arrivedProcesses) {
+                    if (p.remainingTime < minRemainingTime) {
+                        minProcess = p;
+                        minRemainingTime = p.remainingTime;
+                    }
                 }
+
+                checkForNextMinimumProcess = false;
             }
 
             if (minProcess != null) {
@@ -107,6 +113,7 @@ class SJF {
 
                 if (minProcess.remainingTime == 0) {
                     arrivedProcesses.remove(minProcess);
+                    checkForNextMinimumProcess = true;
                 }
 
                 System.out.println("CurrentTime: " + currentTime + " , Process: " + minProcess.processId);
