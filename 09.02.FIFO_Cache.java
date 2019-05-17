@@ -3,29 +3,16 @@
 replacement algorithms LRU and FIFO. Assume suitable input required to
 demonstrate the results.
 
-LRU Part
+FIFO Part
 */
 
+import java.util.Arrays;
 import java.util.Scanner;
 
-class Frame {
-    int pageNumber = -1;
-    int lastAccessTime = -1;
+class CacheFIFO {
 
-    void replaceFrame(int pageNumber, int lastAccessTime) {
-        this.pageNumber = pageNumber;
-        this.lastAccessTime = lastAccessTime;
-    }
-
-    void refreshFrame(int lastAccessTime) {
-        this.lastAccessTime = lastAccessTime;
-    }
-}
-
-class CacheLRU {
-
-    private static Frame[] cache;
-    private static int nF;
+    private static int[] cache;
+    private static int nF, nextFrameIndex = 0;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -41,10 +28,8 @@ class CacheLRU {
         System.out.println("Enter number of frames");
         nF = scanner.nextInt();
 
-        cache = new Frame[nF];
-        for (int i = 0; i < nF; ++i) {
-            cache[i] = new Frame();
-        }
+        cache = new int[nF];
+        Arrays.fill(cache, -1);
 
         int totalHits = 0, totalMisses = 0;
 
@@ -52,11 +37,10 @@ class CacheLRU {
             int index = findPageNumber(pageNumbers[i]);
             if (index != -1) {
                 totalHits += 1;
-                cache[index].refreshFrame(i);
             } else {
                 totalMisses += 1;
-                int temp = getLruFrameIndex();
-                cache[temp].replaceFrame(pageNumbers[i], i);
+                cache[nextFrameIndex] = pageNumbers[i];
+                nextFrameIndex = (nextFrameIndex + 1) % nF;
             }
             printCache();
         }
@@ -70,30 +54,17 @@ class CacheLRU {
 
     public static int findPageNumber(int pageNumber) {
         for (int i = 0; i < nF; ++i) {
-            if (cache[i].pageNumber == pageNumber) {
+            if (cache[i] == pageNumber) {
                 return i;
             }
         }
         return -1;
     }
 
-    public static int getLruFrameIndex() {
-        int min = cache[0].lastAccessTime;
-        int index = 0;
-
-        for (int i = 1; i < nF; ++i) {
-            if (cache[i].lastAccessTime < min) {
-                min = cache[i].lastAccessTime;
-                index = i;
-            }
-        }
-        return index;
-    }
-
     public static void printCache() {
         System.out.print("Cache Content: ");
         for (int i = 0; i < nF; ++i) {
-            System.out.print(cache[i].pageNumber + " ");
+            System.out.print(cache[i] + " ");
         }
         System.out.println();
     }
@@ -103,25 +74,22 @@ class CacheLRU {
 Output:
 
 Enter number of page requests
-13
+10
 Enter page requests
-7 0 1 2 0 3 0 4 2 3 0 3 2
+2 3 5 4 2 5 7 3 8 7
 Enter number of frames
-4
-Cache Content: 7 -1 -1 -1
-Cache Content: 7 0 -1 -1
-Cache Content: 7 0 1 -1
-Cache Content: 7 0 1 2
-Cache Content: 7 0 1 2
-Cache Content: 3 0 1 2
-Cache Content: 3 0 1 2
-Cache Content: 3 0 4 2
-Cache Content: 3 0 4 2
-Cache Content: 3 0 4 2
-Cache Content: 3 0 4 2
-Cache Content: 3 0 4 2
-Cache Content: 3 0 4 2
-Total Hits 7
-Total Misses 6
-Hit Ratio 0.53846157
+3
+Cache Content: 2 -1 -1
+Cache Content: 2 3 -1
+Cache Content: 2 3 5
+Cache Content: 4 3 5
+Cache Content: 4 2 5
+Cache Content: 4 2 5
+Cache Content: 4 2 7
+Cache Content: 3 2 7
+Cache Content: 3 8 7
+Cache Content: 3 8 7
+Total Hits 2
+Total Misses 8
+Hit Ratio 0.2
 */
