@@ -32,19 +32,19 @@ input:
 void main(int argc, char *argv[]) {
 	
 	if(argc != 2)
-    {
-        printf("usage: %s <src file>\n",argv[0]);
-        return;
-    }
+    	{
+        	printf("usage: %s <src file>\n",argv[0]);
+        	return;
+    	}
 
-    FILE *myfile = fopen(argv[1], "r");
+    	FILE *myfile = fopen(argv[1], "r");
 
 	yyin = myfile;
 	do
-    {
+    	{
 		yyparse();
 	} while (!feof(yyin));
-    printf("numbers = %d\nKeywords = %d\nIdentifiers = %d\noperators = %d\n", digitCount, keyCount,idCount, opCount);
+    	printf("numbers = %d\nKeywords = %d\nIdentifiers = %d\noperators = %d\n", digitCount, keyCount,idCount, opCount);
 }
 
 int yyerror()
