@@ -98,7 +98,7 @@ void check()
             stack[st_ptr - 1] = '\0';
             flag = 1;
             st_ptr = st_ptr - 2;
-            printf("$%s\t\t\t%s$\t\t\tF->id\n", stack, ip_sym);
+            printf("$%s\t\t\t%s$\t\t\tF->(E)\n", stack, ip_sym);
         }
 
         if (stack[st_ptr] == 'F' && stack[st_ptr - 1] == '*' && stack[st_ptr - 2] == 'T')
@@ -130,7 +130,7 @@ void check()
             printf("$%s\t\t\t%s$\t\t\tE->T\n", stack, ip_sym);
         }
 
-        if (ip_sym[ip_ptr] != '$' && flag != 1)
+        if (ip_sym[ip_ptr] != '\0' && flag != 1)
         {
             flag = 2;
         }
