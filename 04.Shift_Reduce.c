@@ -20,7 +20,7 @@ void main()
     printf("F -> (E) | id \n");
     printf("Enter the input expression:\n");
     scanf("%s", ip_sym);
-    printf("Stack\t\t\tInput Dymbol\t\t\tAction\n");
+    printf("Stack\t\t\tInput Symbol\t\t\tAction\n");
     printf("$\t\t\t%s$\t\t\t--\n", ip_sym);
     strcpy(act, "Shift ");
     if (ip_sym[ip_ptr] == '(')
