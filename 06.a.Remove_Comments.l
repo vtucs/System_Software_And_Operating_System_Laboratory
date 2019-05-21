@@ -27,3 +27,11 @@ void main(int argc,char *argv[])
     yyout=fopen(argv[2],"w");
     yylex();
 }
+
+/*
+Output: 
+
+>>> lex 06.a.Remove_Comments.l 
+>>> gcc lex.yy.c -ll
+>>> ./a.out input.6a.txt output.6a.txt
+*/
